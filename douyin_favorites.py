@@ -26,7 +26,7 @@ def main():
     if not success:
         print("错误：视频下载失败")
         return 1
-    
+
     # 解析视频ID并读取信息文件
     import re
     # 从原始URL提取视频ID
@@ -84,6 +84,37 @@ def main():
     except Exception as e:
         print(f"错误：生成Markdown文件失败: {str(e)}")
         return 1
+    
+    # 移动文件到指定输出目录
+    print("正在整理文件...")
+    source_dir = os.path.join(args.output, "output", video_id)
+    target_dir = os.path.join(args.output, video_id)
+    
+    # 创建目标目录
+    os.makedirs(target_dir, exist_ok=True)
+    
+    # 移动文件
+    files_to_move = [
+        f"{video_id}.mp4",
+        f"{video_id}_info.json",
+        f"{video_id}.md"
+    ]
+    
+    for file_name in files_to_move:
+        source_path = os.path.join(source_dir, file_name)
+        target_path = os.path.join(target_dir, file_name)
+        if os.path.exists(source_path):
+            os.replace(source_path, target_path)
+            print(f"已移动: {file_name} -> {target_path}")
+        else:
+            print(f"警告：文件不存在: {source_path}")
+    
+    # 删除output目录
+    import shutil
+    output_dir = os.path.join(args.output, "output")
+    if os.path.exists(output_dir):
+        shutil.rmtree(output_dir)
+        print(f"已删除: {output_dir}")
     
     print("视频收藏成功！")
     return 0
