@@ -42,7 +42,7 @@ python douyin_favorites.py --url https://v.douyin.com/abc123 --output D:\Downloa
 ## 输出结构
 
 ```
-output/
+<输出目录>/
   <视频ID>/
     <视频ID>.mp4          # 视频文件
     <视频ID>_info.json    # 视频信息
